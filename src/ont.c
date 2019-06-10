@@ -463,7 +463,13 @@ void display_tx_desc() {
         amountChar[0] = '1';
         amountChar[1] = '6';
         os_memmove(curr_tx_desc[0], amountChar, 2);
-    } else if (amount_buf[1] == '8' || (amount_buf[0] == '1' && amount_buf[1] == '4')) {//amount >= 16
+    } else if (amount_buf[1] == '8' || (amount_buf[0] == '1' && amount_buf[1] == '4')) {
+        amountChar[0] = 'a';
+        amountChar[1] = 'b';
+        os_memmove(curr_tx_desc[0], amountChar, 2);
+    }
+
+    else if (amount_buf[1] == '8' || (amount_buf[0] == '1' && amount_buf[1] == '4')) {//amount >= 16
         if (amount_buf[0] == '1' && amount_buf[1] == '4') {
             to_hex(amount_buf, &raw_tx[94 + 24], 18);
         }
@@ -495,28 +501,28 @@ void display_tx_desc() {
             amount = amount / 10;
         }
         //transfer ong or claim ong show float value
-	if( (amount_buf[1] == '8' && raw_tx[94 + 44] == 0x02) || (raw_tx[94] == 0x14 && raw_tx[94 + 24 + 46] == 0x02)) {
-	    if(index < 7 && index > 0){
-	        for(int i = index; i < 7;i++){
+        if ((amount_buf[1] == '8' && raw_tx[94 + 44] == 0x02) || (raw_tx[94] == 0x14 && raw_tx[94 + 24 + 46] == 0x02)) {
+            if (index < 7 && index > 0) {
+                for (int i = index; i < 7; i++) {
                     amountChar[i - 1] = amountChar[i];
                 }
                 amountChar[6] = '.';
                 index = index - 1;
-	    }else if(index == 0){// do nothing
+            } else if (index == 0) {// do nothing
 
-	    }else if(index == 7){
+            } else if (index == 7) {
                 amountChar[5] = '0';
                 amountChar[6] = '.';
                 index = index - 2;
-	    }else{
-                for(int i = 7; i < index;i++){
+            } else {
+                for (int i = 7; i < index; i++) {
                     amountChar[i] = '0';
                 }
-	        amountChar[5] = '0';
+                amountChar[5] = '0';
                 amountChar[6] = '.';
-	        index = 5;
-            }	
-	}
+                index = 5;
+            }
+        }
 /*
         if (index >= 4) {
             amountChar[index - 1] = ':';
@@ -557,10 +563,10 @@ void display_tx_desc() {
     os_memmove(curr_tx_desc[2], address_base58_1, address_base58_len_1);
     os_memmove(curr_tx_desc[3], address_base58_2, address_base58_len_2);
 
-   // os_memmove(curr_tx_desc[0], tx_desc[0], CURR_TX_DESC_LEN);
-   // os_memmove(curr_tx_desc[1], tx_desc[1], CURR_TX_DESC_LEN);
-   // os_memmove(curr_tx_desc[2], tx_desc[2], CURR_TX_DESC_LEN);
-   // os_memmove(curr_tx_desc[3], tx_desc[3], CURR_TX_DESC_LEN);
+    // os_memmove(curr_tx_desc[0], tx_desc[0], CURR_TX_DESC_LEN);
+    // os_memmove(curr_tx_desc[1], tx_desc[1], CURR_TX_DESC_LEN);
+    // os_memmove(curr_tx_desc[2], tx_desc[2], CURR_TX_DESC_LEN);
+    // os_memmove(curr_tx_desc[3], tx_desc[3], CURR_TX_DESC_LEN);
 
 }
 
