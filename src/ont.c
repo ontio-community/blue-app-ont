@@ -528,8 +528,8 @@ void display_tx_desc() {
 */
         os_memmove(curr_tx_desc[0], &amountChar[index], 16 - index);
     } else {
-        amountChar[0] = '1';
-        amountChar[1] = '0';
+        amountChar[0] = amount_buf[0];
+        amountChar[1] = amount_buf[1];
         os_memmove(curr_tx_desc[0], amountChar, 2);
     }
 
