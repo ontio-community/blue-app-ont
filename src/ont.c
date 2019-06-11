@@ -459,7 +459,7 @@ void display_tx_desc() {
             amountChar[0] = amount_buf[1];
             os_memmove(curr_tx_desc[0], amountChar, 1);
         }
-    } else if (amount_buf[0] == '6' && amount_buf[1] == '0') {// amount = 16,no use
+    } else if (amount_buf[1] == '0') {// amount = 16,no use
         amountChar[0] = '1';
         amountChar[1] = '6';
         os_memmove(curr_tx_desc[0], amountChar, 2);
