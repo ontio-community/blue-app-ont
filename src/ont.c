@@ -528,7 +528,9 @@ void display_tx_desc() {
 */
         os_memmove(curr_tx_desc[0], &amountChar[index], 16 - index);
     } else {
-
+        amountChar[0] = '1';
+        amountChar[1] = '0';
+        os_memmove(curr_tx_desc[0], amountChar, 2);
     }
 
 
