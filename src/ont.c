@@ -459,17 +459,11 @@ void display_tx_desc() {
             amountChar[0] = amount_buf[1];
             os_memmove(curr_tx_desc[0], amountChar, 1);
         }
-    } else if (amount_buf[0] == '6') {// amount = 16,no use
+    } else if (amount_buf[0] == '6' && amount_buf[1] == '0') {// amount = 16,no use
         amountChar[0] = '1';
         amountChar[1] = '6';
         os_memmove(curr_tx_desc[0], amountChar, 2);
-    } else if (amount_buf[1] == '8' || (amount_buf[0] == '1' && amount_buf[1] == '4')) {
-        amountChar[0] = 'a';
-        amountChar[1] = 'b';
-        os_memmove(curr_tx_desc[0], amountChar, 2);
-    }
-
-    else if (amount_buf[1] == '8' || (amount_buf[0] == '1' && amount_buf[1] == '4')) {//amount >= 16
+    } else if (amount_buf[1] == '8' || (amount_buf[0] == '1' && amount_buf[1] == '4')) {//amount >= 16
         if (amount_buf[0] == '1' && amount_buf[1] == '4') {
             to_hex(amount_buf, &raw_tx[94 + 24], 18);
         }
