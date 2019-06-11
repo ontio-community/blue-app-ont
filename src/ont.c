@@ -529,12 +529,16 @@ void display_tx_desc() {
         os_memmove(curr_tx_desc[0], &amountChar[index], 16 - index);
     } else {
         //error: no if-else catches the operation code
-        amountChar[0]="E";
-        amountChar[1]=":";
-        for (int i = 0; i < sizeof(amount_buf); i++){
-            amountChar[i+2]=amount_buf[i];
-        }
-        os_memmove(curr_tx_desc[0], amountChar, sizeof(amount_buf)+2);
+        amountChar[0] = "E";
+        amountChar[1] = ":";
+        amountChar[2] = amount_buf[0];
+        amountChar[3] = amount_buf[1];
+        amountChar[4] = amount_buf[2];
+        amountChar[5] = amount_buf[3];
+//        for (int i = 0; i < sizeof(amount_buf); i++){
+//            amountChar[i+2]=amount_buf[i];
+//        }
+        os_memmove(curr_tx_desc[0], amountChar, 6);
     }
 
 
