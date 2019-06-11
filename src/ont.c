@@ -450,88 +450,10 @@ void display_tx_desc() {
 
 
     char amountChar[MAX_TX_TEXT_WIDTH];
-    if (amount_buf[0] == '5') { //amount = 1-15
-        if (amount_buf[1] >= 'A') {
-            amountChar[0] = '1';
-            amountChar[1] = amount_buf[1] - 'A' + '0';
-            os_memmove(curr_tx_desc[0], amountChar, 2);
-        } else {
-            amountChar[0] = amount_buf[1];
-            os_memmove(curr_tx_desc[0], amountChar, 1);
-        }
-    } else if (amount_buf[1] == '0') {// amount = 16,no use
-        amountChar[0] = '1';
-        amountChar[1] = '6';
-        os_memmove(curr_tx_desc[0], amountChar, 2);
-    } else if (amount_buf[1] == '8' || (amount_buf[0] == '1' && amount_buf[1] == '4')) {//amount >= 16
-        if (amount_buf[0] == '1' && amount_buf[1] == '4') {
-            to_hex(amount_buf, &raw_tx[94 + 24], 18);
-        }
-        for (int i = 0; i < 16; i = i + 2) {
-            amountChar[i] = amount_buf[2 + 16 - i - 2];
-            amountChar[i + 1] = amount_buf[2 + 16 - i - 1];
-        }
-
-        long long amount = 0;
-        for (int i = 0; i < 16; i = i + 2) {
-            long long high = '0';
-            long long low = '0';//fix unsigned char bug
-
-            high = amountChar[i] >= 'A' ? amountChar[i] - 'A' + 10 : amountChar[i] - '0';
-            low = amountChar[i + 1] >= 'A' ? amountChar[i + 1] - 'A' + 10 : amountChar[i + 1] - '0';
-            amount += (high * 16 + low) << ((7 - i / 2) * 8);
-        }
-        amountChar[15] = amount % 10 + '0';
-        amount = amount / 10;
-        int index = 0;
-        for (int i = 14; i >= 0; i--) {
-            if (amount < 10) {
-                amountChar[i] = amount + '0';
-                amount = amount / 10;
-                index = i;
-                break;
-            }
-            amountChar[i] = amount % 10 + '0';
-            amount = amount / 10;
-        }
-        //transfer ong or claim ong show float value
-        if ((amount_buf[1] == '8' && raw_tx[94 + 44] == 0x02) || (raw_tx[94] == 0x14 && raw_tx[94 + 24 + 46] == 0x02)) {
-            if (index < 7 && index > 0) {
-                for (int i = index; i < 7; i++) {
-                    amountChar[i - 1] = amountChar[i];
-                }
-                amountChar[6] = '.';
-                index = index - 1;
-            } else if (index == 0) {// do nothing
-
-            } else if (index == 7) {
-                amountChar[5] = '0';
-                amountChar[6] = '.';
-                index = index - 2;
-            } else {
-                for (int i = 7; i < index; i++) {
-                    amountChar[i] = '0';
-                }
-                amountChar[5] = '0';
-                amountChar[6] = '.';
-                index = 5;
-            }
-        }
-/*
-        if (index >= 4) {
-            amountChar[index - 1] = ':';
-            amountChar[index - 2] = 'm';
-            amountChar[index - 3] = 'u';
-            amountChar[index - 4] = 'N';
-            index = index - 4;
-        }
-*/
-        os_memmove(curr_tx_desc[0], &amountChar[index], 16 - index);
-    } else {
-        amountChar[0] = amount_buf[0];
-        amountChar[1] = amount_buf[1];
-        os_memmove(curr_tx_desc[0], amountChar, 2);
-    }
+ 
+    amountChar[0] = amount_buf[0];
+    amountChar[1] = amount_buf[1];
+    os_memmove(curr_tx_desc[0], amountChar, 2);
 
 
     unsigned char script_hash_buf[SCRIPT_HASH_LEN * 2];
